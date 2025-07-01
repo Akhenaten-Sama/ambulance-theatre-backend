@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -10,6 +10,9 @@ export class User {
 
   @Column({ unique: true })
   phone_number: string;
+
+  @Column({ unique: true, nullable: true })
+  email: string;
 
   @Column({ default: 'patient' })
   role: 'patient' | 'driver' | 'admin';
@@ -25,4 +28,7 @@ export class User {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

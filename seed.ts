@@ -32,6 +32,7 @@ async function seed() {
 
   const admin = userRepo.create({
     name: 'Admin User',
+    email: 'admin@example.com',
     phone_number: '08000000000',
     password,
     role: 'admin',
@@ -41,6 +42,7 @@ async function seed() {
 
   const driver = userRepo.create({
     name: 'Driver One',
+    email: 'driver@example.com',
     phone_number: '08011111111',
     password,
     role: 'driver',

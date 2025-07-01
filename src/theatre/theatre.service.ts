@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Theatre } from './theatre.entity';
 import { Repository } from 'typeorm';
@@ -15,27 +15,67 @@ export class TheatreService {
   ) {}
 
   async create(dto: CreateTheatreDto) {
-    const hospital = await this.hospitalRepo.findOne({ where: { id: dto.hospitalId } });
-    if (!hospital) throw new NotFoundException('Hospital not found');
+    try {
+      const hospital = await this.hospitalRepo.findOne({ where: { id: dto.hospitalId } });
+      if (!hospital) throw new NotFoundException('Hospital not found');
 
-    const theatre = this.theatreRepo.create({
-      hospital,
-      specialty: dto.specialty,
-      available_from: new Date(dto.available_from),
-      available_to: new Date(dto.available_to),
-      available: dto.available,
-    });
+      const theatre = this.theatreRepo.create({
+        hospital,
+        specialty: dto.specialty,
+        available_from: new Date(dto.available_from),
+        available_to: new Date(dto.available_to),
+        available: dto.available,
+      });
 
-    return this.theatreRepo.save(theatre);
+      return await this.theatreRepo.save(theatre);
+    } catch (error) {
+      throw new InternalServerErrorException('An error occurred while creating the theatre.');
+    }
   }
 
   async findAvailableBySpecialty(specialty: string) {
-    return this.theatreRepo.find({
-      where: {
-        specialty,
-        available: true,
-      },
-    });
+    try {
+      return await this.theatreRepo.find({
+        where: {
+          specialty,
+          available: true,
+        },
+        relations: ['hospital'],
+      });
+    } catch (error) {
+      throw new InternalServerErrorException('An error occurred while fetching theatres by specialty.');
+    }
+  }
+
+  async findAll() {
+    try {
+      return await this.theatreRepo.find({ relations: ['hospital'] });
+    } catch (error) {
+      throw new InternalServerErrorException('An error occurred while fetching all theatres.');
+    }
+  }
+
+  async findById(id: string) {
+    try {
+      const theatre = await this.theatreRepo.findOne({ where: { id }, relations: ['hospital'] });
+      if (!theatre) throw new NotFoundException('Theatre not found');
+      return theatre;
+    } catch (error) {
+      throw new InternalServerErrorException('An error occurred while fetching the theatre.');
+    }
+  }
+
+  async delete(id: string) {
+    try {
+      const result = await this.theatreRepo.delete(id);
+      if (result.affected === 0) {
+        throw new NotFoundException('Theatre not found');
+      }
+      return { status: 'success', message: 'Theatre deleted successfully.' };
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('An error occurred while deleting the theatre.');
+    }
   }
 }
 

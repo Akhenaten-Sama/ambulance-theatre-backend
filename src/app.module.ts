@@ -12,8 +12,7 @@ import { configuration, validationSchema } from './config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true,  load: [configuration], validationSchema}),
-    TypeOrmModule.forRoot(), // or DatabaseModule if using the wrapper
+    ConfigModule.forRoot({ isGlobal: true,  load: [configuration], validationSchema}), // or DatabaseModule if using the wrapper
     AuthModule,
     UserModule,
     DatabaseModule,

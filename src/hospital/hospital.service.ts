@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Hospital } from './hospital.entity';
@@ -26,19 +26,34 @@ export class HospitalService {
     return hospital;
   }
   async findAvailableTheatresNearby(lat: number, lng: number, radiusKm: number) {
+  // Get hospitals with at least one available theatre within the radius
   const hospitals = await this.hospitalRepo
     .createQueryBuilder('hospital')
     .leftJoinAndSelect('hospital.theatres', 'theatre')
+    .addSelect(`
+      ST_DistanceSphere(
+        ST_MakePoint(hospital.longitude, hospital.latitude),
+        ST_MakePoint(:lng, :lat)
+      )`, 'distance'
+    )
     .where(`
       ST_DistanceSphere(
-        point(hospital.longitude, hospital.latitude),
-        point(:lng, :lat)
+        ST_MakePoint(hospital.longitude, hospital.latitude),
+        ST_MakePoint(:lng, :lat)
       ) <= :distance
     `, { lat, lng, distance: radiusKm * 1000 })
     .andWhere('theatre.available = true')
     .getMany();
 
-  return hospitals;
+  // Optionally, filter out hospitals with no available theatres (shouldn't be needed, but safe)
+  const filtered = hospitals
+    .map(h => ({
+      ...h,
+      theatres: h.theatres.filter(t => t.available),
+    }))
+    .filter(h => h.theatres.length > 0);
+
+  return filtered;
 }
     async findAvailableTheatresBySpecialty(specialty: string) {
         return this.hospitalRepo
@@ -47,6 +62,31 @@ export class HospitalService {
         .where('theatre.specialty = :specialty', { specialty })
         .andWhere('theatre.available = true')
         .getMany();
+    }
+
+    async delete(id: string) {
+      try {
+        const result = await this.hospitalRepo.delete(id);
+        if (result.affected === 0) {
+          throw new NotFoundException('Hospital not found');
+        }
+        return { status: 'success', message: 'Hospital deleted successfully.' };
+      } catch (error) {
+        if (error instanceof NotFoundException) throw error;
+        throw new InternalServerErrorException('An error occurred while deleting the hospital.');
+      }
+    }
+
+    async update(id: string, dto: Partial<Hospital>) {
+      try {
+        const hospital = await this.hospitalRepo.findOne({ where: { id } });
+        if (!hospital) throw new NotFoundException('Hospital not found');
+        await this.hospitalRepo.update(id, dto);
+        return this.hospitalRepo.findOne({ where: { id } });
+      } catch (error) {
+        if (error instanceof NotFoundException) throw error;
+        throw new InternalServerErrorException({'message':'An error occurred while updating the hospital.', error: error});
+      }
     }
     }
 

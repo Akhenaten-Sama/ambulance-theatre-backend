@@ -1,5 +1,4 @@
 import { IsString, IsNumber } from 'class-validator';
-
 export class CreateHospitalDto {
   @IsString()
   name: string;
@@ -9,7 +8,11 @@ export class CreateHospitalDto {
 
   @IsNumber()
   longitude: number;
+
+  createdAt?: Date;
+  updatedAt?: Date;
 }
+
 export class UpdateHospitalDto {
   @IsString()
   name?: string;
@@ -19,4 +22,7 @@ export class UpdateHospitalDto {
 
   @IsNumber()
   longitude?: number;
+
+  createdAt?: Date;
+  updatedAt?: Date;
 }

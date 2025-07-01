@@ -27,6 +27,10 @@ export class AmbulanceService {
     return this.ambulanceRepo.save(ambulance);
   }
 
+  async findAll() {
+    return this.ambulanceRepo.find({ relations: ['driver'] });
+  }
+
   async findAllAvailableNearby(lat: number, lng: number, radiusKm = 10) {
     const earthRadiusKm = 6371;
 
