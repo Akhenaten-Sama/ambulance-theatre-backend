@@ -4,8 +4,6 @@ Use this file at the end of every work session.
 
 ## Active Tasks
 - [ ] H-001 Restore backend source tree
-- [ ] H-002 Theatre API completion
-- [ ] H-003 Booking-theatre lifecycle hardening
 
 ## Blocked Tasks
 - [ ] H-001 Restore backend source tree
@@ -36,6 +34,8 @@ Use this file at the end of every work session.
 - [x] G-003 Performance pass
 - [x] G-004 Analytics and crash reporting
 - [x] F-002 Realtime event integration layer
+- [x] H-002 Theatre API completion
+- [x] H-003 Booking-theatre lifecycle hardening
 
 ## Session Notes
 - 2026-04-30:
@@ -62,6 +62,9 @@ Use this file at the end of every work session.
 21. Completed `G-003` in standalone app: tuned list rendering, memoized callbacks, and optimized home query execution.
 22. Completed `G-004` in standalone app: added telemetry event tracking, navigation screen-view logging, and global JS error capture hook.
 23. Completed `F-002` in standalone app: built centralized realtime manager with reconnect policy and deterministic cache updates from socket events.
+24. Completed `H-002` in backend: added operational theatre endpoints (status, current surgery, utilization, equipment check, cleaning complete) and removed error masking in controller path.
+25. Completed `H-003` in backend: hardened booking-theatre transition logic for completion/cleaning and reschedule DTO support.
+26. `H-001` remains blocked: full backend build still fails due pre-existing cross-module type mismatches outside theatre scope (seed, ambulance, auth, hospital, user, emergency-request).
 
 ## Update Protocol
 1. Move task checkbox to `Done` immediately after acceptance criteria are met.

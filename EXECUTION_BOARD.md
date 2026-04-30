@@ -253,7 +253,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - Dependencies: Repository state fix
 
 ### H-002 - Theatre API completion
-- Status: `Blocked`
+- Status: `Done`
 - Scope: Fill omitted/partial theatre operations.
 - Acceptance Criteria:
 1. Status update endpoint with transition guards exists.
@@ -262,7 +262,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - Dependencies: H-001
 
 ### H-003 - Booking-theatre lifecycle hardening
-- Status: `Blocked`
+- Status: `Done`
 - Scope: Ensure booking completion fully reconciles theatre state.
 - Acceptance Criteria:
 1. Booking completion transitions theatre to cleaning.
@@ -297,3 +297,5 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - 2026-04-30: Completed `G-003` with FlatList performance tuning, stable callbacks, and reduced home dashboard query overhead.
 - 2026-04-30: Completed `G-004` with telemetry event instrumentation, screen-view tracking, and global JS error capture hook.
 - 2026-04-30: Completed `F-002` with shared socket manager, reconnect policy, centralized query-cache invalidation bridge, and scoped connection UI handling.
+- 2026-05-01: Completed `H-002` with theatre status/surgery/utilization/equipment endpoints and improved 4xx error preservation.
+- 2026-05-01: Completed `H-003` with booking completion cleanup, cleaning-state handling, and explicit theatre cleaning-complete transition endpoint.
