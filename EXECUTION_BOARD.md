@@ -130,7 +130,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - Dependencies: C-001
 
 ### E-002 - Theatre details
-- Status: `Todo`
+- Status: `Done`
 - Scope: Show single theatre operational details.
 - Acceptance Criteria:
 1. Detail includes status, specialty, availability window.
@@ -148,7 +148,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - Dependencies: C-001
 
 ### E-004 - Booking details
-- Status: `Todo`
+- Status: `Done`
 - Scope: Detailed booking timeline and fields.
 - Acceptance Criteria:
 1. Details include theatre, surgeon, schedule, status timeline.
@@ -284,3 +284,5 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - 2026-04-30: Completed `E-003` with segmented upcoming/history booking lists, pull-to-refresh, and history pagination load-more behavior.
 - 2026-04-30: Completed `F-001` with notifications center list, mark single read, mark all read, pagination, and refresh behavior.
 - 2026-04-30: Completed `C-002` with unread badge wiring from backend count, app-active refresh, and query invalidation after read actions.
+- 2026-04-30: Completed `E-002` with theatre detail screen, list-to-detail navigation, and utilization/equipment info blocks.
+- 2026-04-30: Completed `E-004` with booking detail screen, list-to-detail navigation, and role-based action visibility.

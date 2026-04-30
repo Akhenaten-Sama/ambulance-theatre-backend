@@ -5,10 +5,10 @@ Use this file at the end of every work session.
 ## Active Tasks
 - [ ] A-003 Design system v1
 - [ ] C-001 Role-aware home screen
-- [ ] E-002 Theatre details
-- [ ] E-004 Booking details
 - [ ] E-005 Create booking flow (staff role)
 - [ ] E-006 Reschedule/cancel flow
+- [ ] D-001 Emergency request creation flow
+- [ ] D-002 Emergency tracking screen (realtime + fallback)
 
 ## Blocked Tasks
 - [ ] H-001 Restore backend source tree
@@ -26,6 +26,8 @@ Use this file at the end of every work session.
 - [x] E-003 Booking list (upcoming/history)
 - [x] F-001 Notifications list and mark-as-read
 - [x] C-002 Notification badge and unread state
+- [x] E-002 Theatre details
+- [x] E-004 Booking details
 
 ## Session Notes
 - 2026-04-30:
@@ -39,6 +41,8 @@ Use this file at the end of every work session.
 8. Completed `E-003` in standalone app: bookings upcoming/history segmented lists with paginated history loading.
 9. Completed `F-001` in standalone app: notification center with read actions, mark-all-read, refresh, and pagination.
 10. Completed `C-002` in standalone app: tab unread badge from backend with refresh on app active and updates after read actions.
+11. Completed `E-002` in standalone app: theatre details screen with list-to-detail navigation and operational info blocks.
+12. Completed `E-004` in standalone app: booking details screen with list-to-detail navigation and role-based action visibility.
 
 ## Update Protocol
 1. Move task checkbox to `Done` immediately after acceptance criteria are met.
