@@ -195,7 +195,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - Dependencies: C-002
 
 ### F-002 - Realtime event integration layer
-- Status: `Todo`
+- Status: `Done`
 - Scope: Shared socket manager for emergency/booking/theatre events.
 - Acceptance Criteria:
 1. Socket auth uses JWT and reconnect policy.
@@ -296,3 +296,4 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - 2026-04-30: Completed `G-002` with accessibility labels/hints, semantic headers, and minimum touch-target improvements on key controls.
 - 2026-04-30: Completed `G-003` with FlatList performance tuning, stable callbacks, and reduced home dashboard query overhead.
 - 2026-04-30: Completed `G-004` with telemetry event instrumentation, screen-view tracking, and global JS error capture hook.
+- 2026-04-30: Completed `F-002` with shared socket manager, reconnect policy, centralized query-cache invalidation bridge, and scoped connection UI handling.
