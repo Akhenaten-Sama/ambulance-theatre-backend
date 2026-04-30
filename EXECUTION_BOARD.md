@@ -110,7 +110,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - Dependencies: D-001
 
 ### D-003 - Emergency history
-- Status: `Todo`
+- Status: `Done`
 - Scope: Patient can view previous emergency requests.
 - Acceptance Criteria:
 1. Paginated list of prior requests.
@@ -301,3 +301,4 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - 2026-05-01: Completed `H-003` with booking completion cleanup, cleaning-state handling, and explicit theatre cleaning-complete transition endpoint.
 - 2026-05-01: Completed `H-001` by restoring backend source modules, fixing cross-module DTO/entity mismatches, excluding legacy seed scripts from build, and verifying `npm run build` passes.
 - 2026-05-01: Completed `E-007` in mobile with guarded theatre status transitions, current-surgery actions, equipment checks, and booking start/complete lifecycle controls.
+- 2026-05-01: Completed `D-003` in mobile with paginated emergency history, status/date filters, and deep-link from history item to tracking details.

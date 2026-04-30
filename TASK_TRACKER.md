@@ -3,7 +3,7 @@
 Use this file at the end of every work session.
 
 ## Active Tasks
-- [ ] D-003 Emergency history
+- [ ] B-002 Registration screen + validation
 
 ## Blocked Tasks
 - [ ] None currently
@@ -36,6 +36,7 @@ Use this file at the end of every work session.
 - [x] H-003 Booking-theatre lifecycle hardening
 - [x] H-001 Restore backend source tree
 - [x] E-007 Theatre lifecycle operations (staff/admin)
+- [x] D-003 Emergency history
 
 ## Session Notes
 - 2026-05-01:
@@ -66,6 +67,7 @@ Use this file at the end of every work session.
 25. Completed `H-003` in backend: hardened booking-theatre transition logic for completion/cleaning and reschedule DTO support.
 26. Completed `H-001`: restored backend source health by fixing ambulance/auth/user/hospital/emergency-request typing mismatches and verified `npm run build` passes.
 27. Completed `E-007` in mobile: added lifecycle actions for theatre status transitions, current surgery assignment, cleaning completion, equipment checks, and booking start/complete controls with role/status guards.
+28. Completed `D-003` in mobile: added paginated emergency history, status/date filters, and history-to-tracking deep-link navigation.
 
 ## Update Protocol
 1. Move task checkbox to `Done` immediately after acceptance criteria are met.
