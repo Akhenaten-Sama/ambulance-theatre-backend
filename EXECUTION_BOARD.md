@@ -92,7 +92,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 ## Epic D - Emergency Flow
 
 ### D-001 - Emergency request creation flow
-- Status: `Todo`
+- Status: `Done`
 - Scope: Fast, low-friction emergency submission form.
 - Acceptance Criteria:
 1. User can submit emergency type, severity, pickup location/address.
@@ -101,7 +101,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - Dependencies: B-003
 
 ### D-002 - Emergency tracking screen (realtime + fallback)
-- Status: `Todo`
+- Status: `Done`
 - Scope: Track emergency status progression in near realtime.
 - Acceptance Criteria:
 1. Realtime subscription updates status when events arrive.
@@ -288,3 +288,5 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - 2026-04-30: Completed `E-004` with booking detail screen, list-to-detail navigation, and role-based action visibility.
 - 2026-04-30: Completed `E-005` with staff-only booking creation form, validation, backend create call, and success navigation to details.
 - 2026-04-30: Completed `E-006` with booking reschedule and cancel actions, cancellation confirmation, and query refresh on success.
+- 2026-04-30: Completed `D-001` with emergency request form, duplicate submit protection, and success navigation to tracking screen.
+- 2026-04-30: Completed `D-002` with realtime emergency tracking subscriptions, polling fallback, and connection-aware refresh behavior.
