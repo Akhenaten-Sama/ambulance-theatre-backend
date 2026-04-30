@@ -206,7 +206,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 ## Epic G - Quality, Security, Performance
 
 ### G-001 - Error handling and UX polish
-- Status: `Todo`
+- Status: `Done`
 - Scope: Standardize UX for API/network/form errors.
 - Acceptance Criteria:
 1. Global error parser maps backend errors to display-safe messages.
@@ -292,3 +292,4 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - 2026-04-30: Completed `D-002` with realtime emergency tracking subscriptions, polling fallback, and connection-aware refresh behavior.
 - 2026-04-30: Completed `A-003` with shared theme tokens and reusable `Screen`, `Card`, `Button`, `Input`, and `EmptyState` components.
 - 2026-04-30: Completed `C-001` with role-aware home dashboard cards for patient and staff, including loading/error/empty states.
+- 2026-04-30: Completed `G-001` with centralized API error mapping and consistent inline alert UX across core screens.

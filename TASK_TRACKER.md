@@ -3,11 +3,11 @@
 Use this file at the end of every work session.
 
 ## Active Tasks
-- [ ] G-001 Error handling and UX polish
 - [ ] G-002 Accessibility pass
 - [ ] G-003 Performance pass
 - [ ] G-004 Analytics and crash reporting
 - [ ] F-002 Realtime event integration layer
+- [ ] H-001 Restore backend source tree
 
 ## Blocked Tasks
 - [ ] H-001 Restore backend source tree
@@ -33,6 +33,7 @@ Use this file at the end of every work session.
 - [x] D-002 Emergency tracking screen (realtime + fallback)
 - [x] A-003 Design system v1
 - [x] C-001 Role-aware home screen
+- [x] G-001 Error handling and UX polish
 
 ## Session Notes
 - 2026-04-30:
@@ -54,6 +55,7 @@ Use this file at the end of every work session.
 16. Completed `D-002` in standalone app: realtime emergency tracking with socket events, polling fallback, and manual refresh action.
 17. Completed `A-003` in standalone app: shared UI tokens and reusable components for consistent iOS/Android styling.
 18. Completed `C-001` in standalone app: role-aware home cards for patient and staff with operational summaries and fallback states.
+19. Completed `G-001` in standalone app: unified API error mapping and reusable inline alert UI applied across major screens.
 
 ## Update Protocol
 1. Move task checkbox to `Done` immediately after acceptance criteria are met.
