@@ -81,7 +81,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - Dependencies: B-003, A-003
 
 ### C-002 - Notification badge and unread state
-- Status: `Todo`
+- Status: `Done`
 - Scope: Show unread notification count in shell/tab.
 - Acceptance Criteria:
 1. Badge count loads from backend unread endpoint.
@@ -186,7 +186,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 ## Epic F - Notifications and Realtime
 
 ### F-001 - Notifications list and mark-as-read
-- Status: `Todo`
+- Status: `Done`
 - Scope: Full notification center screen.
 - Acceptance Criteria:
 1. Paginated list renders with unread/read distinction.
@@ -282,3 +282,5 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - 2026-04-30: Completed `B-003` with secure session persistence, cold-start hydration, logout clearing, and global 401-triggered session reset.
 - 2026-04-30: Completed `E-001` with theatre specialty filter chips, filtered query wiring, token-aware requests, and refresh/empty states.
 - 2026-04-30: Completed `E-003` with segmented upcoming/history booking lists, pull-to-refresh, and history pagination load-more behavior.
+- 2026-04-30: Completed `F-001` with notifications center list, mark single read, mark all read, pagination, and refresh behavior.
+- 2026-04-30: Completed `C-002` with unread badge wiring from backend count, app-active refresh, and query invalidation after read actions.
