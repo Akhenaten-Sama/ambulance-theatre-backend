@@ -32,7 +32,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - Dependencies: A-001
 
 ### A-003 - Design system v1
-- Status: `Todo`
+- Status: `Done`
 - Scope: Build shared UI primitives for cross-platform consistency.
 - Acceptance Criteria:
 1. Shared color/spacing/type tokens are defined.
@@ -72,7 +72,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 ## Epic C - Home and Core Dashboard
 
 ### C-001 - Role-aware home screen
-- Status: `Todo`
+- Status: `Done`
 - Scope: Build home summary cards per user role.
 - Acceptance Criteria:
 1. Patient home shows emergency quick action + booking summary.
@@ -290,3 +290,5 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - 2026-04-30: Completed `E-006` with booking reschedule and cancel actions, cancellation confirmation, and query refresh on success.
 - 2026-04-30: Completed `D-001` with emergency request form, duplicate submit protection, and success navigation to tracking screen.
 - 2026-04-30: Completed `D-002` with realtime emergency tracking subscriptions, polling fallback, and connection-aware refresh behavior.
+- 2026-04-30: Completed `A-003` with shared theme tokens and reusable `Screen`, `Card`, `Button`, `Input`, and `EmptyState` components.
+- 2026-04-30: Completed `C-001` with role-aware home dashboard cards for patient and staff, including loading/error/empty states.

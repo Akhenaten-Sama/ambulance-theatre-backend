@@ -3,12 +3,11 @@
 Use this file at the end of every work session.
 
 ## Active Tasks
-- [ ] A-003 Design system v1
-- [ ] C-001 Role-aware home screen
 - [ ] G-001 Error handling and UX polish
 - [ ] G-002 Accessibility pass
 - [ ] G-003 Performance pass
 - [ ] G-004 Analytics and crash reporting
+- [ ] F-002 Realtime event integration layer
 
 ## Blocked Tasks
 - [ ] H-001 Restore backend source tree
@@ -32,6 +31,8 @@ Use this file at the end of every work session.
 - [x] E-006 Reschedule/cancel flow
 - [x] D-001 Emergency request creation flow
 - [x] D-002 Emergency tracking screen (realtime + fallback)
+- [x] A-003 Design system v1
+- [x] C-001 Role-aware home screen
 
 ## Session Notes
 - 2026-04-30:
@@ -51,6 +52,8 @@ Use this file at the end of every work session.
 14. Completed `E-006` in standalone app: booking reschedule and cancel flows with validation, confirmation, and cache refresh.
 15. Completed `D-001` in standalone app: emergency request creation with validation, duplicate-submit protection, and transition to tracking.
 16. Completed `D-002` in standalone app: realtime emergency tracking with socket events, polling fallback, and manual refresh action.
+17. Completed `A-003` in standalone app: shared UI tokens and reusable components for consistent iOS/Android styling.
+18. Completed `C-001` in standalone app: role-aware home cards for patient and staff with operational summaries and fallback states.
 
 ## Update Protocol
 1. Move task checkbox to `Done` immediately after acceptance criteria are met.
