@@ -224,7 +224,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - Dependencies: A-003
 
 ### G-003 - Performance pass
-- Status: `Todo`
+- Status: `Done`
 - Scope: Optimize list rendering and startup behavior.
 - Acceptance Criteria:
 1. Lists use virtualization and stable keys.
@@ -294,3 +294,4 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - 2026-04-30: Completed `C-001` with role-aware home dashboard cards for patient and staff, including loading/error/empty states.
 - 2026-04-30: Completed `G-001` with centralized API error mapping and consistent inline alert UX across core screens.
 - 2026-04-30: Completed `G-002` with accessibility labels/hints, semantic headers, and minimum touch-target improvements on key controls.
+- 2026-04-30: Completed `G-003` with FlatList performance tuning, stable callbacks, and reduced home dashboard query overhead.
