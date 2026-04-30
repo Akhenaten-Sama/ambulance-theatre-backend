@@ -1,26 +1,22 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import { User } from '../user/user.entity';
-import { Ambulance } from 'src/ambulance/ambulance.entity';
-import { Hospital } from 'src/hospital/hospital.entity';
-import { Theatre } from 'src/theatre/theatre.entity';
-
 
 export const typeOrmConfig = (configService: ConfigService): TypeOrmModuleOptions => ({
   type: 'postgres',
-  host: configService.get<string>('DATABASE_HOST', 'localhost'), // Use 'postgres' for Docker
-  port: configService.get<number>('DATABASE_PORT', 5432),
-  username: configService.get<string>('DATABASE_USERNAME', 'postgres'),
-  password: configService.get<string>('DATABASE_PASSWORD', 'postgres'),
-  database: configService.get<string>('DATABASE_NAME', 'treasura'),
-  entities: [User, Hospital,Theatre, Ambulance],
-  synchronize: true, // Set to false in production
-  logging: true,
+  host: configService.get<string>('DB_HOST', 'localhost'),
+  port: configService.get<number>('DB_PORT', 5432),
+  username: configService.get<string>('DB_USERNAME', 'postgres'),
+  password: configService.get<string>('DB_PASSWORD', 'postgres123'),
+  database: configService.get<string>('DB_NAME', 'ambulance_theatre'),
+  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+  synchronize: configService.get<string>('NODE_ENV') !== 'production', // Auto-sync in development only
+  logging: configService.get<string>('NODE_ENV') === 'development',
+  // PostGIS support - no extra config needed, TypeORM handles geometry types
   extra: {
-    max: 20, // Allow up to 50 concurrent connections
-    connectionTimeoutMillis: 5000, 
-    idleTimeoutMillis: 10000,
-    statement_timeout: 10000, 
-    query_timeout: 10000, 
+    max: 20, // Connection pool size
+    connectionTimeoutMillis: 10000,
+    idleTimeoutMillis: 30000,
+    statement_timeout: 30000,
+    query_timeout: 30000,
   },
 });
