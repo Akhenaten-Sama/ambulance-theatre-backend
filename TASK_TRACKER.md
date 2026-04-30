@@ -3,7 +3,6 @@
 Use this file at the end of every work session.
 
 ## Active Tasks
-- [ ] G-004 Analytics and crash reporting
 - [ ] F-002 Realtime event integration layer
 - [ ] H-001 Restore backend source tree
 
@@ -34,6 +33,7 @@ Use this file at the end of every work session.
 - [x] G-001 Error handling and UX polish
 - [x] G-002 Accessibility pass
 - [x] G-003 Performance pass
+- [x] G-004 Analytics and crash reporting
 
 ## Session Notes
 - 2026-04-30:
@@ -58,6 +58,7 @@ Use this file at the end of every work session.
 19. Completed `G-001` in standalone app: unified API error mapping and reusable inline alert UI applied across major screens.
 20. Completed `G-002` in standalone app: improved accessibility labels, hints, semantic headings, and control touch targets.
 21. Completed `G-003` in standalone app: tuned list rendering, memoized callbacks, and optimized home query execution.
+22. Completed `G-004` in standalone app: added telemetry event tracking, navigation screen-view logging, and global JS error capture hook.
 
 ## Update Protocol
 1. Move task checkbox to `Done` immediately after acceptance criteria are met.

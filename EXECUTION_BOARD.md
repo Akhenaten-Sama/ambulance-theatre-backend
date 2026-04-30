@@ -233,7 +233,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - Dependencies: C-001, E-003
 
 ### G-004 - Analytics and crash reporting
-- Status: `Todo`
+- Status: `Done`
 - Scope: Add observability for production readiness.
 - Acceptance Criteria:
 1. Crash reporting integrated.
@@ -295,3 +295,4 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - 2026-04-30: Completed `G-001` with centralized API error mapping and consistent inline alert UX across core screens.
 - 2026-04-30: Completed `G-002` with accessibility labels/hints, semantic headers, and minimum touch-target improvements on key controls.
 - 2026-04-30: Completed `G-003` with FlatList performance tuning, stable callbacks, and reduced home dashboard query overhead.
+- 2026-04-30: Completed `G-004` with telemetry event instrumentation, screen-view tracking, and global JS error capture hook.
