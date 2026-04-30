@@ -121,7 +121,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 ## Epic E - Theatre and Booking
 
 ### E-001 - Theatre list and specialty filters
-- Status: `Todo`
+- Status: `Done`
 - Scope: Show theatres with status and filter controls.
 - Acceptance Criteria:
 1. Theatre list fetches from backend and renders status clearly.
@@ -139,7 +139,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - Dependencies: E-001
 
 ### E-003 - Booking list (upcoming/history)
-- Status: `Todo`
+- Status: `Done`
 - Scope: Surface booking lists for patient/staff.
 - Acceptance Criteria:
 1. Upcoming/past segmented lists render from backend.
@@ -280,3 +280,5 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - 2026-04-30: Completed `A-002` with Expo `extra.apiBaseUrl` config and README endpoint guidance for Android/iOS/device.
 - 2026-04-30: Completed `B-001` with backend `/auth/login` integration, credential form validation, and login error/loading UI states.
 - 2026-04-30: Completed `B-003` with secure session persistence, cold-start hydration, logout clearing, and global 401-triggered session reset.
+- 2026-04-30: Completed `E-001` with theatre specialty filter chips, filtered query wiring, token-aware requests, and refresh/empty states.
+- 2026-04-30: Completed `E-003` with segmented upcoming/history booking lists, pull-to-refresh, and history pagination load-more behavior.
