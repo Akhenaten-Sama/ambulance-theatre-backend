@@ -3,7 +3,6 @@
 Use this file at the end of every work session.
 
 ## Active Tasks
-- [ ] G-002 Accessibility pass
 - [ ] G-003 Performance pass
 - [ ] G-004 Analytics and crash reporting
 - [ ] F-002 Realtime event integration layer
@@ -34,6 +33,7 @@ Use this file at the end of every work session.
 - [x] A-003 Design system v1
 - [x] C-001 Role-aware home screen
 - [x] G-001 Error handling and UX polish
+- [x] G-002 Accessibility pass
 
 ## Session Notes
 - 2026-04-30:
@@ -56,6 +56,7 @@ Use this file at the end of every work session.
 17. Completed `A-003` in standalone app: shared UI tokens and reusable components for consistent iOS/Android styling.
 18. Completed `C-001` in standalone app: role-aware home cards for patient and staff with operational summaries and fallback states.
 19. Completed `G-001` in standalone app: unified API error mapping and reusable inline alert UI applied across major screens.
+20. Completed `G-002` in standalone app: improved accessibility labels, hints, semantic headings, and control touch targets.
 
 ## Update Protocol
 1. Move task checkbox to `Done` immediately after acceptance criteria are met.
