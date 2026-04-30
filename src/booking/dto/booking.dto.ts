@@ -111,6 +111,18 @@ export class UpdateBookingDto {
   actual_end?: Date;
 
   @ApiPropertyOptional()
+  @Type(() => Date)
+  @IsDate()
+  @IsOptional()
+  scheduled_start?: Date;
+
+  @ApiPropertyOptional()
+  @Type(() => Date)
+  @IsDate()
+  @IsOptional()
+  scheduled_end?: Date;
+
+  @ApiPropertyOptional()
   @IsNumber()
   @IsOptional()
   actual_duration?: number;

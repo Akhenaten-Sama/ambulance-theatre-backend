@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Query, UseGuards, Delete, Param, InternalServerErrorException } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, UseGuards, Delete, Param, Patch } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation, ApiBody, ApiQuery, ApiCreatedResponse, ApiOkResponse, ApiResponse } from '@nestjs/swagger';
 import { TheatreService } from './theatre.service';
 import { CreateTheatreDto } from './dto/create-theatre.dto';
@@ -170,6 +170,40 @@ export class TheatreController {
     return this.theatreService.findAll();
   }
 
+  @Patch(':id/status')
+  @ApiOperation({ summary: 'Update theatre status' })
+  updateStatus(@Param('id') id: string, @Body('status') status: string) {
+    return this.theatreService.updateStatus(id, status as any);
+  }
+
+  @Post(':id/current-surgery')
+  @ApiOperation({ summary: 'Set current surgery on theatre' })
+  setCurrentSurgery(@Param('id') id: string, @Body('surgery_id') surgeryId?: string) {
+    return this.theatreService.setCurrentSurgery(id, surgeryId ?? null);
+  }
+
+  @Post(':id/cleaning-complete')
+  @ApiOperation({ summary: 'Mark theatre cleaning as complete and return to available state' })
+  markCleaningComplete(@Param('id') id: string) {
+    return this.theatreService.markCleaningComplete(id);
+  }
+
+  @Get(':id/utilization')
+  @ApiOperation({ summary: 'Get theatre utilization for a date range' })
+  getUtilization(
+    @Param('id') id: string,
+    @Query('start') start: string,
+    @Query('end') end: string,
+  ) {
+    return this.theatreService.getUtilization(id, new Date(start), new Date(end));
+  }
+
+  @Post(':id/equipment/check')
+  @ApiOperation({ summary: 'Check theatre equipment availability for required list' })
+  checkEquipment(@Param('id') id: string, @Body('required_equipment') requiredEquipment: string[]) {
+    return this.theatreService.checkEquipmentAvailability(id, requiredEquipment || []);
+  }
+
   /**
    * Delete a theatre by ID.
    * 
@@ -189,13 +223,7 @@ export class TheatreController {
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a theatre by ID' })
   @ApiResponse({ status: 200, description: 'Theatre deleted successfully.' })
-  @ApiResponse({ status: 500, description: 'Internal server error.' })
   async delete(@Param('id') id: string) {
-    try {
-      return await this.theatreService.delete(id);
-    } catch (error) {
-      // Log the error if needed
-      throw new InternalServerErrorException('An error occurred while deleting the theatre.');
-    }
+    return await this.theatreService.delete(id);
   }
 }

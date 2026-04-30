@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, InternalServerErrorException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Theatre } from './theatre.entity';
 import { Repository, Between } from 'typeorm';
@@ -16,52 +16,36 @@ export class TheatreService {
   ) {}
 
   async create(dto: CreateTheatreDto) {
-    try {
-      const hospital = await this.hospitalRepo.findOne({ where: { id: dto.hospitalId } });
-      if (!hospital) throw new NotFoundException('Hospital not found');
+    const hospital = await this.hospitalRepo.findOne({ where: { id: dto.hospitalId } });
+    if (!hospital) throw new NotFoundException('Hospital not found');
 
-      const theatre = this.theatreRepo.create({
-        ...dto,
-        hospital,
-        status: dto.status || TheatreStatus.AVAILABLE,
-      });
+    const theatre = this.theatreRepo.create({
+      ...dto,
+      hospital,
+      status: TheatreStatus.AVAILABLE,
+    });
 
-      return await this.theatreRepo.save(theatre);
-    } catch (error) {
-      throw new InternalServerErrorException('An error occurred while creating the theatre.');
-    }
+    return await this.theatreRepo.save(theatre);
   }
 
   async findAvailableBySpecialty(specialty: string) {
-    try {
-      return await this.theatreRepo.find({
-        where: {
-          specialty,
-          status: TheatreStatus.AVAILABLE,
-        },
-        relations: ['hospital'],
-      });
-    } catch (error) {
-      throw new InternalServerErrorException('An error occurred while fetching theatres by specialty.');
-    }
+    return await this.theatreRepo.find({
+      where: {
+        specialty,
+        status: TheatreStatus.AVAILABLE,
+      },
+      relations: ['hospital'],
+    });
   }
 
   async findAll() {
-    try {
-      return await this.theatreRepo.find({ relations: ['hospital'] });
-    } catch (error) {
-      throw new InternalServerErrorException('An error occurred while fetching all theatres.');
-    }
+    return await this.theatreRepo.find({ relations: ['hospital'] });
   }
 
   async findById(id: string) {
-    try {
-      const theatre = await this.theatreRepo.findOne({ where: { id }, relations: ['hospital'] });
-      if (!theatre) throw new NotFoundException('Theatre not found');
-      return theatre;
-    } catch (error) {
-      throw new InternalServerErrorException('An error occurred while fetching the theatre.');
-    }
+    const theatre = await this.theatreRepo.findOne({ where: { id }, relations: ['hospital'] });
+    if (!theatre) throw new NotFoundException('Theatre not found');
+    return theatre;
   }
 
   async updateStatus(id: string, status: TheatreStatus) {
@@ -78,9 +62,25 @@ export class TheatreService {
 
   async setCurrentSurgery(id: string, surgeryId: string | null) {
     await this.theatreRepo.update(id, {
-      current_surgery_id: surgeryId,
+      current_surgery_id: surgeryId ?? undefined,
       status: surgeryId ? TheatreStatus.IN_USE : TheatreStatus.AVAILABLE,
     });
+    return this.findById(id);
+  }
+
+  async markCleaningComplete(id: string) {
+    const theatre = await this.findById(id);
+    if (theatre.status !== TheatreStatus.CLEANING) {
+      throw new BadRequestException('Theatre is not currently in cleaning state');
+    }
+
+    await this.theatreRepo.update(id, {
+      status: TheatreStatus.AVAILABLE,
+      available: true,
+      current_surgery_id: undefined,
+      current_surgeon_id: undefined,
+    });
+
     return this.findById(id);
   }
 
@@ -105,7 +105,7 @@ export class TheatreService {
 
   async checkEquipmentAvailability(id: string, requiredEquipment: string[]) {
     const theatre = await this.findById(id);
-    const availableEquipment = theatre.equipment || [];
+    const availableEquipment = (theatre.equipment || []).map((item) => item.name);
 
     const missingEquipment = requiredEquipment.filter((item) => !availableEquipment.includes(item));
 

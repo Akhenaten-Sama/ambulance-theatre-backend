@@ -184,8 +184,9 @@ export class BookingService {
         // Update theatre status
         await this.theatreRepo.update(booking.theatre_id, {
           status: TheatreStatus.CLEANING,
-          current_surgery_id: null,
-          current_surgeon_id: null,
+          current_surgery_id: undefined,
+          current_surgeon_id: undefined,
+          available: false,
           total_surgeries: () => 'total_surgeries + 1',
         });
       }
