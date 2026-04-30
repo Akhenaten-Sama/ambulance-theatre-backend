@@ -157,7 +157,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - Dependencies: E-003
 
 ### E-005 - Create booking flow (staff role)
-- Status: `Todo`
+- Status: `Done`
 - Scope: Staff can create theatre bookings from mobile.
 - Acceptance Criteria:
 1. Required fields are validated and submitted.
@@ -166,7 +166,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - Dependencies: E-001, E-003
 
 ### E-006 - Reschedule/cancel flow
-- Status: `Todo`
+- Status: `Done`
 - Scope: Handle booking changes with confirmation UX.
 - Acceptance Criteria:
 1. Cancel requires reason and confirms before submit.
@@ -286,3 +286,5 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - 2026-04-30: Completed `C-002` with unread badge wiring from backend count, app-active refresh, and query invalidation after read actions.
 - 2026-04-30: Completed `E-002` with theatre detail screen, list-to-detail navigation, and utilization/equipment info blocks.
 - 2026-04-30: Completed `E-004` with booking detail screen, list-to-detail navigation, and role-based action visibility.
+- 2026-04-30: Completed `E-005` with staff-only booking creation form, validation, backend create call, and success navigation to details.
+- 2026-04-30: Completed `E-006` with booking reschedule and cancel actions, cancellation confirmation, and query refresh on success.
