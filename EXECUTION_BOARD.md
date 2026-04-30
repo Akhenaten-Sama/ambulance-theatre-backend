@@ -43,7 +43,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 ## Epic B - Authentication and Session
 
 ### B-001 - Login screen + API integration
-- Status: `Todo`
+- Status: `Done`
 - Scope: Build login UI and integrate backend auth endpoint.
 - Acceptance Criteria:
 1. Valid credentials log user in and persist token securely.
@@ -61,7 +61,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - Dependencies: B-001
 
 ### B-003 - Session lifecycle management
-- Status: `Todo`
+- Status: `Done`
 - Scope: Handle token restore, expiry, and logout cleanly.
 - Acceptance Criteria:
 1. App restores valid session on cold start.
@@ -278,3 +278,5 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - 2026-04-30: Added initial theatre API wiring and base mobile structure (to be continued in standalone repo).
 - 2026-04-30: Completed `A-001` with React Navigation, React Query provider, auth store, and normalized API client.
 - 2026-04-30: Completed `A-002` with Expo `extra.apiBaseUrl` config and README endpoint guidance for Android/iOS/device.
+- 2026-04-30: Completed `B-001` with backend `/auth/login` integration, credential form validation, and login error/loading UI states.
+- 2026-04-30: Completed `B-003` with secure session persistence, cold-start hydration, logout clearing, and global 401-triggered session reset.
