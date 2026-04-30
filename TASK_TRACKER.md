@@ -3,7 +3,7 @@
 Use this file at the end of every work session.
 
 ## Active Tasks
-- [ ] B-002 Registration screen + validation
+- [ ] None currently
 
 ## Blocked Tasks
 - [ ] None currently
@@ -37,6 +37,7 @@ Use this file at the end of every work session.
 - [x] H-001 Restore backend source tree
 - [x] E-007 Theatre lifecycle operations (staff/admin)
 - [x] D-003 Emergency history
+- [x] B-002 Registration screen + validation
 
 ## Session Notes
 - 2026-05-01:
@@ -68,6 +69,7 @@ Use this file at the end of every work session.
 26. Completed `H-001`: restored backend source health by fixing ambulance/auth/user/hospital/emergency-request typing mismatches and verified `npm run build` passes.
 27. Completed `E-007` in mobile: added lifecycle actions for theatre status transitions, current surgery assignment, cleaning completion, equipment checks, and booking start/complete controls with role/status guards.
 28. Completed `D-003` in mobile: added paginated emergency history, status/date filters, and history-to-tracking deep-link navigation.
+29. Completed `B-002` in mobile: added patient registration screen with required field validation, mapped API errors, and automatic post-registration session path.
 
 ## Update Protocol
 1. Move task checkbox to `Done` immediately after acceptance criteria are met.
