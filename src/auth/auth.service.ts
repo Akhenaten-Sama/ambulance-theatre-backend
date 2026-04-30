@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { User } from '../user/user.entity';
 import * as bcrypt from 'bcryptjs';
 import { RegisterDto, LoginDto } from './dto/auth.dto';
+import { UserRole } from '../common/enums';
 
 @Injectable()
 export class AuthService {
@@ -22,6 +23,12 @@ export class AuthService {
 
     const user = this.userRepo.create({
       ...registerDto,
+      role:
+        registerDto.role === 'admin'
+          ? UserRole.SYSTEM_ADMIN
+          : registerDto.role === 'driver'
+            ? UserRole.DRIVER
+            : UserRole.PATIENT,
       password: await bcrypt.hash(registerDto.password, 10),
     });
     await this.userRepo.save(user);

@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
+import { UserRole } from '../common/enums';
 
 @Injectable()
 export class UserService {
@@ -33,7 +34,9 @@ export class UserService {
   }
 
   async findAdmins(): Promise<User[]> {
-    return this.userRepo.find({ where: { role: 'admin' } });
+    return this.userRepo.find({
+      where: [{ role: UserRole.SYSTEM_ADMIN }, { role: UserRole.SUPER_ADMIN }],
+    });
   }
 
   async update(id: string, data: Partial<User>): Promise<User> {

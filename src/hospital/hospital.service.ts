@@ -117,19 +117,19 @@ export class HospitalService {
 
   async addStaff(id: string, staffIds: string[]) {
     const hospital = await this.findById(id);
-    const currentStaff = hospital.staff_ids || [];
+    const currentStaff = hospital.admin_staff || [];
     const updatedStaff = [...new Set([...currentStaff, ...staffIds])];
 
-    await this.hospitalRepo.update(id, { staff_ids: updatedStaff });
+    await this.hospitalRepo.update(id, { admin_staff: updatedStaff });
     return this.findById(id);
   }
 
   async removeStaff(id: string, staffIds: string[]) {
     const hospital = await this.findById(id);
-    const currentStaff = hospital.staff_ids || [];
+    const currentStaff = hospital.admin_staff || [];
     const updatedStaff = currentStaff.filter((staffId) => !staffIds.includes(staffId));
 
-    await this.hospitalRepo.update(id, { staff_ids: updatedStaff });
+    await this.hospitalRepo.update(id, { admin_staff: updatedStaff });
     return this.findById(id);
   }
 

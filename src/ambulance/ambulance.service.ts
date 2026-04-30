@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Ambulance } from './ambulance.entity';
 import { User } from '../user/user.entity';
 import { CreateAmbulanceDto } from './dto/create-ambulance.dto';
-import { AmbulanceStatus, AmbulanceType } from '../common/enums';
+import { AmbulanceStatus, UserRole } from '../common/enums';
 import { toPostGISPoint } from '../common/utils';
 
 @Injectable()
@@ -17,17 +17,23 @@ export class AmbulanceService {
   ) {}
 
   async create(dto: CreateAmbulanceDto) {
-    const driver = await this.userRepo.findOne({ where: { id: dto.driverId, role: 'driver' } });
-    if (!driver) throw new NotFoundException('Driver not found');
+    let driver: User | null = null;
+    if (dto.current_driver_id) {
+      driver = await this.userRepo.findOne({
+        where: { id: dto.current_driver_id, role: UserRole.DRIVER },
+      });
+      if (!driver) throw new NotFoundException('Driver not found');
+    }
 
     const ambulance = this.ambulanceRepo.create({
       ...dto,
-      driver,
+      driver: driver || undefined,
       current_location: toPostGISPoint(dto.longitude, dto.latitude),
-      status: dto.status || AmbulanceStatus.AVAILABLE,
+      status: AmbulanceStatus.AVAILABLE,
       location_history: [
         {
-          coordinates: { lat: dto.latitude, lng: dto.longitude },
+          latitude: dto.latitude,
+          longitude: dto.longitude,
           timestamp: new Date(),
           speed: 0,
         },
@@ -79,7 +85,8 @@ export class AmbulanceService {
 
     const locationHistory = ambulance.location_history || [];
     locationHistory.push({
-      coordinates: { lat: latitude, lng: longitude },
+      latitude,
+      longitude,
       timestamp: new Date(),
       speed: speed || 0,
     });
@@ -102,7 +109,7 @@ export class AmbulanceService {
     const ambulance = await this.findById(id);
 
     // Validation logic
-    if (status === AmbulanceStatus.AVAILABLE && ambulance.status === AmbulanceStatus.ON_TRIP) {
+    if (status === AmbulanceStatus.AVAILABLE && ambulance.status === AmbulanceStatus.TRANSPORTING) {
       throw new BadRequestException('Cannot mark ambulance as available while on trip');
     }
 
@@ -118,8 +125,7 @@ export class AmbulanceService {
       total_trips: ambulance.total_trips,
       average_response_time: ambulance.average_response_time,
       rating: ambulance.rating,
-      total_distance_covered: ambulance.total_distance_covered,
-      fuel_efficiency: ambulance.fuel_efficiency,
+      mileage: ambulance.mileage,
       last_maintenance: ambulance.last_maintenance_date,
       status: ambulance.status,
     };

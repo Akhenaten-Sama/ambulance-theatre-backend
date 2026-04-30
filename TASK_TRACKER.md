@@ -3,12 +3,10 @@
 Use this file at the end of every work session.
 
 ## Active Tasks
-- [ ] H-001 Restore backend source tree
+- [ ] E-007 Theatre lifecycle operations (staff/admin)
 
 ## Blocked Tasks
-- [ ] H-001 Restore backend source tree
-- [ ] H-002 Theatre API completion
-- [ ] H-003 Booking-theatre lifecycle hardening
+- [ ] None currently
 
 ## Done Tasks
 - [x] Project planning and execution board creation
@@ -36,9 +34,10 @@ Use this file at the end of every work session.
 - [x] F-002 Realtime event integration layer
 - [x] H-002 Theatre API completion
 - [x] H-003 Booking-theatre lifecycle hardening
+- [x] H-001 Restore backend source tree
 
 ## Session Notes
-- 2026-04-30:
+- 2026-05-01:
 1. Created ticketed execution board with acceptance criteria (`EXECUTION_BOARD.md`).
 2. Established tracker workflow for active/blocked/done tasks.
 3. Noted backend theatre completion tasks are blocked by missing/restoration-needed source tree.
@@ -64,7 +63,7 @@ Use this file at the end of every work session.
 23. Completed `F-002` in standalone app: built centralized realtime manager with reconnect policy and deterministic cache updates from socket events.
 24. Completed `H-002` in backend: added operational theatre endpoints (status, current surgery, utilization, equipment check, cleaning complete) and removed error masking in controller path.
 25. Completed `H-003` in backend: hardened booking-theatre transition logic for completion/cleaning and reschedule DTO support.
-26. `H-001` remains blocked: full backend build still fails due pre-existing cross-module type mismatches outside theatre scope (seed, ambulance, auth, hospital, user, emergency-request).
+26. Completed `H-001`: restored backend source health by fixing ambulance/auth/user/hospital/emergency-request typing mismatches and verified `npm run build` passes.
 
 ## Update Protocol
 1. Move task checkbox to `Done` immediately after acceptance criteria are met.

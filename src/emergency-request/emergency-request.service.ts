@@ -40,8 +40,8 @@ export class EmergencyRequestService {
     };
 
     // Destination handling
-    let destinationPoint = null;
-    let destinationHospital = null;
+    let destinationPoint: string | null = null;
+    let destinationHospital: Hospital | null = null;
 
     if (dto.destination_hospital_id) {
       destinationHospital = await this.hospitalRepo.findOne({
@@ -63,7 +63,7 @@ export class EmergencyRequestService {
       pickup_longitude: dto.pickup_longitude,
       pickup_address: pickupAddress,
       destination_hospital_id: dto.destination_hospital_id,
-      destination_location: destinationPoint,
+      destination_location: destinationPoint || undefined,
       destination_latitude: dto.destination_latitude,
       destination_longitude: dto.destination_longitude,
       emergency_type: dto.emergency_type,

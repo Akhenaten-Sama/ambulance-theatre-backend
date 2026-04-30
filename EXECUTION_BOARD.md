@@ -1,6 +1,6 @@
 # Ambulance Theatre Platform - Execution Board
 
-Last Updated: 2026-04-30
+Last Updated: 2026-05-01
 Owner: Product + Engineering
 Tracking Rule: Every completed task must be moved to `Done` and added to the completion log.
 
@@ -244,7 +244,7 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 ## Epic H - Backend Closure for Theatre Domain
 
 ### H-001 - Restore backend source tree
-- Status: `Blocked`
+- Status: `Done`
 - Scope: Recover `src` and ensure build from source is stable.
 - Acceptance Criteria:
 1. `src` exists and matches intended branch state.
@@ -299,3 +299,4 @@ Tracking Rule: Every completed task must be moved to `Done` and added to the com
 - 2026-04-30: Completed `F-002` with shared socket manager, reconnect policy, centralized query-cache invalidation bridge, and scoped connection UI handling.
 - 2026-05-01: Completed `H-002` with theatre status/surgery/utilization/equipment endpoints and improved 4xx error preservation.
 - 2026-05-01: Completed `H-003` with booking completion cleanup, cleaning-state handling, and explicit theatre cleaning-complete transition endpoint.
+- 2026-05-01: Completed `H-001` by restoring backend source modules, fixing cross-module DTO/entity mismatches, excluding legacy seed scripts from build, and verifying `npm run build` passes.
