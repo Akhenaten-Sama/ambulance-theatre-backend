@@ -16,13 +16,22 @@ export class AuthService {
   ) {}
 
   async register(registerDto: RegisterDto) {
+    const normalizedPhone = registerDto.phone_number?.trim();
+    const normalizedEmail = registerDto.email?.trim().toLowerCase();
+
+    if (!normalizedPhone && !normalizedEmail) {
+      throw new UnauthorizedException('Email or phone number is required');
+    }
+
     const userExists = await this.userRepo.findOne({
-      where: { phone_number: registerDto.phone_number },
+      where: normalizedPhone ? { phone_number: normalizedPhone } : { email: normalizedEmail },
     });
     if (userExists) throw new UnauthorizedException('User already exists');
 
     const user = this.userRepo.create({
       ...registerDto,
+      email: normalizedEmail,
+      phone_number: normalizedPhone,
       role:
         registerDto.role === 'admin'
           ? UserRole.SYSTEM_ADMIN
@@ -33,17 +42,23 @@ export class AuthService {
     });
     await this.userRepo.save(user);
 
-    const token = this.jwtService.sign({ sub: user.id, phone_number: user.phone_number });
+    const token = this.jwtService.sign({ sub: user.id, phone_number: user.phone_number, email: user.email });
     return { token };
   }
 
   async login(loginDto: LoginDto) {
-    const user = await this.userRepo.findOne({ where: { phone_number: loginDto.phone_number } });
+    const normalizedPhone = loginDto.phone_number?.trim();
+    const normalizedEmail = loginDto.email?.trim().toLowerCase();
+
+    const user = await this.userRepo.findOne({
+      where: normalizedPhone ? { phone_number: normalizedPhone } : { email: normalizedEmail },
+    });
+
     if (!user || !(await bcrypt.compare(loginDto.password, user.password))) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const token = this.jwtService.sign({ sub: user.id, phone_number: user.phone_number });
+
+    const token = this.jwtService.sign({ sub: user.id, phone_number: user.phone_number, email: user.email });
     return { token };
   }
 }
-import { UserService } from '../user/user.service';
