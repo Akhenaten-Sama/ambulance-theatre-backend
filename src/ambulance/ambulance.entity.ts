@@ -5,7 +5,6 @@ import { AmbulanceStatus, AmbulanceType } from '../common/enums';
 import { Equipment, Supply, LocationHistory } from '../common/types';
 
 @Entity('ambulances')
-@Index(['status'])
 @Index(['hospital_id'])
 export class Ambulance {
   @PrimaryGeneratedColumn('uuid')
@@ -48,7 +47,7 @@ export class Ambulance {
   // Location & Tracking
   @Column({ type: 'geography', spatialFeatureType: 'Point', srid: 4326 })
   @Index({ spatial: true })
-  current_location: string; // PostGIS Point
+  current_location: { type: 'Point'; coordinates: [number, number] }; // GeoJSON Point
 
   @Column('float')
   latitude: number;

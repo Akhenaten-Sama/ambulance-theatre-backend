@@ -4,7 +4,6 @@ import { HospitalType, TraumaCenterLevel, MedicalSpecialty } from '../common/enu
 import { Address, PhoneNumber, Department, Accreditation, OperatingHours } from '../common/types';
 
 @Entity('hospitals')
-@Index(['type'])
 export class Hospital {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -39,7 +38,7 @@ export class Hospital {
 
   @Column({ type: 'geography', spatialFeatureType: 'Point', srid: 4326 })
   @Index({ spatial: true })
-  location: string; // PostGIS Point
+  location: { type: 'Point'; coordinates: [number, number] }; // GeoJSON Point
 
   @Column('float')
   latitude: number;

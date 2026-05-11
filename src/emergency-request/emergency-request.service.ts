@@ -89,7 +89,7 @@ export class EmergencyRequestService {
       full_address: `${dto.pickup_latitude}, ${dto.pickup_longitude}`,
     };
 
-    let destinationPoint: string | null = null;
+    let destinationPoint: { type: 'Point'; coordinates: [number, number] } | null = null;
     let destinationHospital: Hospital | null = null;
 
     if (dto.destination_hospital_id) {

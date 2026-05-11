@@ -28,7 +28,7 @@ export class AmbulanceService {
     const ambulance = this.ambulanceRepo.create({
       ...dto,
       driver: driver || undefined,
-      current_location: toPostGISPoint(dto.longitude, dto.latitude),
+      current_location: toPostGISPoint(dto.latitude, dto.longitude),
       status: AmbulanceStatus.AVAILABLE,
       location_history: [
         {
@@ -97,7 +97,7 @@ export class AmbulanceService {
     }
 
     await this.ambulanceRepo.update(id, {
-      current_location: toPostGISPoint(longitude, latitude),
+      current_location: toPostGISPoint(latitude, longitude),
       location_history: locationHistory,
       last_maintenance_date: ambulance.last_maintenance_date, // Keep existing value
     });

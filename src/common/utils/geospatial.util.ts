@@ -41,8 +41,14 @@ function toRadians(degrees: number): number {
  * @param longitude 
  * @returns PostGIS Point string in WKT format
  */
-export function toPostGISPoint(latitude: number, longitude: number): string {
-  return `POINT(${longitude} ${latitude})`; // Note: PostGIS uses (lon, lat) order
+export function toPostGISPoint(
+  latitude: number,
+  longitude: number,
+): { type: 'Point'; coordinates: [number, number] } {
+  return {
+    type: 'Point',
+    coordinates: [longitude, latitude], // GeoJSON uses [lon, lat]
+  };
 }
 
 /**

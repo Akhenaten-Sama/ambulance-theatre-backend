@@ -15,7 +15,7 @@ export class HospitalService {
   create(dto: CreateHospitalDto) {
     const hospital = this.hospitalRepo.create({
       ...dto,
-      location: dto.latitude && dto.longitude ? toPostGISPoint(dto.longitude, dto.latitude) : undefined,
+      location: dto.latitude && dto.longitude ? toPostGISPoint(dto.latitude, dto.longitude) : undefined,
     });
     return this.hospitalRepo.save(hospital);
   }
@@ -153,7 +153,7 @@ export class HospitalService {
 
       // Handle location update if lat/lng provided
       if (dto['latitude'] && dto['longitude']) {
-        dto.location = toPostGISPoint(dto['longitude'], dto['latitude']);
+        dto.location = toPostGISPoint(dto['latitude'], dto['longitude']);
       }
 
       await this.hospitalRepo.update(id, dto);

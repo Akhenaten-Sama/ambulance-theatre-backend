@@ -7,9 +7,7 @@ import { Address, VitalSigns, Route, StatusChange } from '../common/types';
 
 @Entity('emergency_requests')
 @Index(['patient_id'])
-@Index(['status'])
 @Index(['requested_at'])
-@Index(['severity'])
 export class EmergencyRequest {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -31,7 +29,7 @@ export class EmergencyRequest {
   // Location
   @Column({ type: 'geography', spatialFeatureType: 'Point', srid: 4326 })
   @Index({ spatial: true })
-  pickup_location: string; // PostGIS Point
+  pickup_location: { type: 'Point'; coordinates: [number, number] }; // GeoJSON Point
 
   @Column('float')
   pickup_latitude: number;
@@ -50,7 +48,7 @@ export class EmergencyRequest {
   destination_hospital: Hospital;
 
   @Column({ type: 'geography', spatialFeatureType: 'Point', srid: 4326, nullable: true })
-  destination_location: string;
+  destination_location: { type: 'Point'; coordinates: [number, number] };
 
   @Column('float', { nullable: true })
   destination_latitude: number;
