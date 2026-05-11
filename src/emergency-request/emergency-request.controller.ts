@@ -11,6 +11,16 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 export class EmergencyRequestController {
   constructor(private readonly service: EmergencyRequestService) {}
 
+  private asArrayResponse<T>(result: T[] | { data?: T[] }): T[] {
+    if (Array.isArray(result)) {
+      return result;
+    }
+    if (result && Array.isArray((result as { data?: T[] }).data)) {
+      return (result as { data: T[] }).data;
+    }
+    return [];
+  }
+
   @Post()
   @ApiOperation({ summary: 'Create emergency request' })
   @ApiResponse({ status: 201, description: 'Emergency request created' })
@@ -21,15 +31,17 @@ export class EmergencyRequestController {
   @Get()
   @ApiOperation({ summary: 'Get all emergency requests (admin)' })
   @ApiResponse({ status: 200, description: 'List of emergency requests' })
-  findAll(@Query() query: QueryEmergencyRequestDto) {
-    return this.service.findAll(query);
+  async findAll(@Query() query: QueryEmergencyRequestDto) {
+    const result = await this.service.findAll(query);
+    return this.asArrayResponse(result as any);
   }
 
   @Get('my-requests')
   @ApiOperation({ summary: 'Get current user emergency requests' })
   @ApiResponse({ status: 200, description: 'User emergency requests' })
-  findMyRequests(@Request() req, @Query() query: QueryEmergencyRequestDto) {
-    return this.service.findByUserId(req.user.sub, query);
+  async findMyRequests(@Request() req, @Query() query: QueryEmergencyRequestDto) {
+    const result = await this.service.findByUserId(req.user.sub, query);
+    return this.asArrayResponse(result as any);
   }
 
   @Get('active')
