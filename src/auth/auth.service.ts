@@ -15,6 +15,23 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
+  private toAuthPayload(user: User) {
+    const token = this.jwtService.sign({ sub: user.id, phone_number: user.phone_number, email: user.email });
+    const safeUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone_number: user.phone_number,
+      role: user.role,
+      status: user.status,
+    };
+    return {
+      token,
+      access_token: token,
+      user: safeUser,
+    };
+  }
+
   async register(registerDto: RegisterDto) {
     const normalizedPhone = registerDto.phone_number?.trim();
     const normalizedEmail = registerDto.email?.trim().toLowerCase();
@@ -42,8 +59,7 @@ export class AuthService {
     });
     await this.userRepo.save(user);
 
-    const token = this.jwtService.sign({ sub: user.id, phone_number: user.phone_number, email: user.email });
-    return { token };
+    return this.toAuthPayload(user);
   }
 
   async login(loginDto: LoginDto) {
@@ -58,7 +74,6 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const token = this.jwtService.sign({ sub: user.id, phone_number: user.phone_number, email: user.email });
-    return { token };
+    return this.toAuthPayload(user);
   }
 }
