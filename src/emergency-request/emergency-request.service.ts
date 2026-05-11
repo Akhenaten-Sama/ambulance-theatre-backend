@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ForbiddenException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EmergencyRequest } from './emergency-request.entity';
@@ -75,7 +75,7 @@ export class EmergencyRequestService {
 
   async create(userId: string, dto: CreateEmergencyRequestDto) {
     const user = await this.userRepo.findOne({ where: { id: userId } });
-    if (!user) throw new NotFoundException('User not found');
+    if (!user) throw new UnauthorizedException('Session expired. Please log in again.');
 
     const emergencyType = this.normalizeEmergencyType(String(dto.emergency_type));
     const severity = this.normalizeSeverity(String(dto.severity));
