@@ -314,6 +314,8 @@ export class EmergencyRequestService {
   }
 
   async chooseRoute(id: string, ambulanceId?: string, hospitalId?: string) {
+    const request = await this.findById(id);
+
     if (hospitalId) {
       const hospital = await this.hospitalRepo.findOne({ where: { id: hospitalId } });
       if (!hospital) {
@@ -328,7 +330,8 @@ export class EmergencyRequestService {
       });
     }
 
-    if (ambulanceId) {
+    // Only dispatch here if request is still pending and unassigned.
+    if (ambulanceId && request.status === RequestStatus.PENDING && !request.assigned_ambulance_id) {
       await this.dispatch(id, ambulanceId);
     }
 
