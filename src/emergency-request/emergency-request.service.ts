@@ -6,7 +6,7 @@ import { Ambulance } from '../ambulance/ambulance.entity';
 import { User } from '../user/user.entity';
 import { Hospital } from '../hospital/hospital.entity';
 import { CreateEmergencyRequestDto, UpdateEmergencyRequestDto, QueryEmergencyRequestDto } from './dto/emergency-request.dto';
-import { RequestStatus, AmbulanceStatus, EmergencySeverity } from '../common/enums';
+import { RequestStatus, AmbulanceStatus, EmergencySeverity, EmergencyType } from '../common/enums';
 import { calculateDistance, toPostGISPoint } from '../common/utils';
 import { createPaginatedResponse, parsePaginationParams, getSkipValue } from '../common/utils';
 
@@ -23,15 +23,65 @@ export class EmergencyRequestService {
     private hospitalRepo: Repository<Hospital>,
   ) {}
 
+  private normalizeEmergencyType(raw: string): EmergencyType {
+    const value = raw.trim().toLowerCase();
+    const map: Record<string, EmergencyType> = {
+      medical: EmergencyType.OTHER,
+      trauma: EmergencyType.TRAUMA,
+      accident: EmergencyType.ACCIDENT,
+      stroke: EmergencyType.STROKE,
+      burn: EmergencyType.BURN,
+      poisoning: EmergencyType.POISONING,
+      maternity: EmergencyType.MATERNITY,
+      psychiatric: EmergencyType.PSYCHIATRIC,
+      seizure: EmergencyType.SEIZURE,
+      fracture: EmergencyType.FRACTURE,
+      bleeding: EmergencyType.BLEEDING,
+      unconscious: EmergencyType.UNCONSCIOUS,
+      respiratory: EmergencyType.RESPIRATORY_DISTRESS,
+      respiratory_distress: EmergencyType.RESPIRATORY_DISTRESS,
+      cardiac: EmergencyType.CARDIAC_ARREST,
+      cardiac_arrest: EmergencyType.CARDIAC_ARREST,
+      allergic: EmergencyType.ALLERGIC_REACTION,
+      allergic_reaction: EmergencyType.ALLERGIC_REACTION,
+      other: EmergencyType.OTHER,
+    };
+
+    const normalized = map[value];
+    if (!normalized) {
+      throw new BadRequestException('Invalid emergency type');
+    }
+    return normalized;
+  }
+
+  private normalizeSeverity(raw: string): EmergencySeverity {
+    const value = raw.trim().toLowerCase();
+    const map: Record<string, EmergencySeverity> = {
+      critical: EmergencySeverity.CRITICAL,
+      high: EmergencySeverity.CRITICAL,
+      urgent: EmergencySeverity.URGENT,
+      medium: EmergencySeverity.URGENT,
+      non_urgent: EmergencySeverity.NON_URGENT,
+      low: EmergencySeverity.NON_URGENT,
+      routine: EmergencySeverity.ROUTINE,
+    };
+
+    const normalized = map[value];
+    if (!normalized) {
+      throw new BadRequestException('Invalid emergency severity');
+    }
+    return normalized;
+  }
+
   async create(userId: string, dto: CreateEmergencyRequestDto) {
-    // Get user
     const user = await this.userRepo.findOne({ where: { id: userId } });
     if (!user) throw new NotFoundException('User not found');
 
-    // Create PostGIS point for pickup location
+    const emergencyType = this.normalizeEmergencyType(String(dto.emergency_type));
+    const severity = this.normalizeSeverity(String(dto.severity));
+
     const pickupPoint = toPostGISPoint(dto.pickup_latitude, dto.pickup_longitude);
 
-    // Build address if not provided
     const pickupAddress = dto.pickup_address || {
       city: 'Unknown',
       state: 'Unknown',
@@ -39,7 +89,6 @@ export class EmergencyRequestService {
       full_address: `${dto.pickup_latitude}, ${dto.pickup_longitude}`,
     };
 
-    // Destination handling
     let destinationPoint: string | null = null;
     let destinationHospital: Hospital | null = null;
 
@@ -66,8 +115,8 @@ export class EmergencyRequestService {
       destination_location: destinationPoint || undefined,
       destination_latitude: dto.destination_latitude,
       destination_longitude: dto.destination_longitude,
-      emergency_type: dto.emergency_type,
-      severity: dto.severity,
+      emergency_type: emergencyType,
+      severity,
       description: dto.description,
       patient_condition: dto.patient_condition,
       vital_signs: dto.vital_signs,
@@ -83,8 +132,7 @@ export class EmergencyRequestService {
 
     const saved = await this.requestRepo.save(request);
 
-    // Auto-dispatch for critical emergencies
-    if (dto.severity === EmergencySeverity.CRITICAL) {
+    if (severity === EmergencySeverity.CRITICAL) {
       await this.autoDispatch(saved.id);
     }
 
@@ -176,7 +224,6 @@ export class EmergencyRequestService {
   async update(id: string, dto: UpdateEmergencyRequestDto) {
     const request = await this.findById(id);
 
-    // Update status history if status changed
     if (dto.status && dto.status !== request.status) {
       const statusHistory = request.status_history || [];
       statusHistory.push({
@@ -186,13 +233,11 @@ export class EmergencyRequestService {
       });
       dto['status_history'] = statusHistory;
 
-      // Update timestamps based on status
       const now = new Date();
       if (dto.status === RequestStatus.DISPATCHED) {
         dto['dispatched_at'] = now;
       } else if (dto.status === RequestStatus.AT_SCENE) {
         dto['arrived_at_scene'] = now;
-        // Calculate response time
         if (request.dispatched_at) {
           const responseTime = (now.getTime() - request.dispatched_at.getTime()) / (1000 * 60);
           dto['response_time'] = Math.round(responseTime * 10) / 10;
@@ -201,14 +246,12 @@ export class EmergencyRequestService {
         dto['departed_scene'] = now;
       } else if (dto.status === RequestStatus.ARRIVED) {
         dto['arrived_at_hospital'] = now;
-        // Calculate transport time
         if (request.departed_scene) {
           const transportTime = (now.getTime() - request.departed_scene.getTime()) / (1000 * 60);
           dto['transport_time'] = Math.round(transportTime * 10) / 10;
         }
       } else if (dto.status === RequestStatus.COMPLETED) {
         dto['completed_at'] = now;
-        // Calculate total time
         const totalTime = (now.getTime() - request.requested_at.getTime()) / (1000 * 60);
         dto['total_time'] = Math.round(totalTime * 10) / 10;
       }
@@ -236,13 +279,11 @@ export class EmergencyRequestService {
       throw new BadRequestException('Ambulance is not available');
     }
 
-    // Update ambulance status
     await this.ambulanceRepo.update(ambulanceId, {
       status: AmbulanceStatus.DISPATCHED,
       available: false,
     });
 
-    // Update request
     return this.update(id, {
       status: RequestStatus.DISPATCHED,
       assigned_ambulance_id: ambulanceId,
@@ -253,7 +294,6 @@ export class EmergencyRequestService {
   async autoDispatch(id: string) {
     const request = await this.findById(id);
 
-    // Find nearest available ambulance
     const nearestAmbulance = await this.findNearestAmbulance(
       request.pickup_latitude,
       request.pickup_longitude,
@@ -268,7 +308,6 @@ export class EmergencyRequestService {
   }
 
   async findNearestAmbulance(lat: number, lng: number, severity: EmergencySeverity) {
-    // Query available ambulances within 50km radius
     const ambulances = await this.ambulanceRepo
       .createQueryBuilder('ambulance')
       .leftJoinAndSelect('ambulance.driver', 'driver')
@@ -286,20 +325,17 @@ export class EmergencyRequestService {
 
     if (ambulances.length === 0) return null;
 
-    // Calculate distances and score
     const scored = ambulances.map((ambulance) => {
       const distance = calculateDistance(
         { latitude: lat, longitude: lng },
         { latitude: ambulance.latitude, longitude: ambulance.longitude },
       );
 
-      // Scoring algorithm
       let score = 0;
-      score += (50 - distance) * 2; // Distance factor (closer = higher score)
-      score += ambulance.rating * 10; // Rating factor
-      score += ambulance.has_life_support ? 20 : 0; // Capability bonus
+      score += (50 - distance) * 2;
+      score += ambulance.rating * 10;
+      score += ambulance.has_life_support ? 20 : 0;
 
-      // Critical emergencies prefer advanced ambulances
       if (severity === EmergencySeverity.CRITICAL && ambulance.type === 'advanced') {
         score += 30;
       }
@@ -307,7 +343,6 @@ export class EmergencyRequestService {
       return { ambulance, distance, score };
     });
 
-    // Sort by score (highest first)
     scored.sort((a, b) => b.score - a.score);
 
     return scored[0].ambulance;
@@ -324,7 +359,6 @@ export class EmergencyRequestService {
       throw new BadRequestException('Request is already completed or cancelled');
     }
 
-    // Release ambulance if assigned
     if (request.assigned_ambulance_id) {
       await this.ambulanceRepo.update(request.assigned_ambulance_id, {
         status: AmbulanceStatus.AVAILABLE,
