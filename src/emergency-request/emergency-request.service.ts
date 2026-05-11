@@ -9,6 +9,7 @@ import { CreateEmergencyRequestDto, UpdateEmergencyRequestDto, QueryEmergencyReq
 import { RequestStatus, AmbulanceStatus, EmergencySeverity, EmergencyType } from '../common/enums';
 import { calculateDistance, toPostGISPoint } from '../common/utils';
 import { createPaginatedResponse, parsePaginationParams, getSkipValue } from '../common/utils';
+import { RealtimeGateway } from '../realtime/realtime.gateway';
 
 @Injectable()
 export class EmergencyRequestService {
@@ -21,6 +22,7 @@ export class EmergencyRequestService {
     private userRepo: Repository<User>,
     @InjectRepository(Hospital)
     private hospitalRepo: Repository<Hospital>,
+    private readonly realtimeGateway: RealtimeGateway,
   ) {}
 
   private normalizeEmergencyType(raw: string): EmergencyType {
@@ -132,9 +134,8 @@ export class EmergencyRequestService {
 
     const saved = await this.requestRepo.save(request);
 
-    if (severity === EmergencySeverity.CRITICAL) {
-      await this.autoDispatch(saved.id);
-    }
+    // Attempt auto-dispatch for all severities so requests do not remain idle in pending state.
+    await this.autoDispatch(saved.id);
 
     return this.findById(saved.id);
   }
@@ -258,7 +259,12 @@ export class EmergencyRequestService {
     }
 
     await this.requestRepo.update(id, dto);
-    return this.findById(id);
+    const updated = await this.findById(id);
+    this.realtimeGateway.broadcastEmergencyUpdate(updated.id, updated.status);
+    if (updated.assigned_ambulance_id) {
+      this.realtimeGateway.broadcastEmergencyAssignment(updated.id, updated.assigned_ambulance_id, 12);
+    }
+    return updated;
   }
 
   async dispatch(id: string, ambulanceId: string) {
@@ -302,6 +308,28 @@ export class EmergencyRequestService {
 
     if (nearestAmbulance) {
       await this.dispatch(id, nearestAmbulance.id);
+    }
+
+    return this.findById(id);
+  }
+
+  async chooseRoute(id: string, ambulanceId?: string, hospitalId?: string) {
+    if (hospitalId) {
+      const hospital = await this.hospitalRepo.findOne({ where: { id: hospitalId } });
+      if (!hospital) {
+        throw new NotFoundException('Hospital not found');
+      }
+
+      await this.requestRepo.update(id, {
+        destination_hospital_id: hospital.id,
+        destination_latitude: hospital.latitude,
+        destination_longitude: hospital.longitude,
+        destination_location: toPostGISPoint(hospital.latitude, hospital.longitude),
+      });
+    }
+
+    if (ambulanceId) {
+      await this.dispatch(id, ambulanceId);
     }
 
     return this.findById(id);

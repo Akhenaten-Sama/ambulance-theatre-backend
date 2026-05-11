@@ -70,6 +70,18 @@ export class EmergencyRequestController {
     return this.service.dispatch(id, ambulanceId);
   }
 
+  @Post(':id/choose-route')
+  @ApiOperation({ summary: 'Choose nearest ambulance and/or hospital for emergency' })
+  @ApiParam({ name: 'id', description: 'Emergency request UUID' })
+  @ApiResponse({ status: 200, description: 'Route choice applied' })
+  chooseRoute(
+    @Param('id') id: string,
+    @Body('ambulance_id') ambulanceId?: string,
+    @Body('hospital_id') hospitalId?: string,
+  ) {
+    return this.service.chooseRoute(id, ambulanceId, hospitalId);
+  }
+
   @Post(':id/auto-dispatch')
   @ApiOperation({ summary: 'Auto-dispatch nearest ambulance' })
   @ApiParam({ name: 'id', description: 'Emergency request UUID' })
