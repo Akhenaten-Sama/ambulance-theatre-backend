@@ -5,9 +5,9 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Enable CORS for your React frontend
+  // Keep CORS open in development to support dashboard + local tooling.
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: true,
     credentials: true,
   });
 
@@ -20,8 +20,9 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
   console.log('DB Host:', process.env.DB_HOST);
-  await app.listen(3000);
+  await app.listen(3000, '0.0.0.0');
 }
 bootstrap();
 
