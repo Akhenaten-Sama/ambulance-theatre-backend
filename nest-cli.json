@@ -4,5 +4,6 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true
-  }
+  },
+  "exclude": ["seed.ts", "seed.enhanced.ts", "node_modules", "dist", "test"]
 }

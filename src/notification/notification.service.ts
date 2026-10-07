@@ -120,7 +120,7 @@ export class NotificationService {
       },
     });
 
-    return { count };
+    return count;
   }
 
   async delete(id: string, userId: string) {

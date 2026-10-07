@@ -5,7 +5,6 @@ import { Equipment, MaintenanceSchedule } from '../common/types';
 
 @Entity('theatres')
 @Index(['hospital_id'])
-@Index(['status'])
 export class Theatre {
   @PrimaryGeneratedColumn('uuid')
   id: string;

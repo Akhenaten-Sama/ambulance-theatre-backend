@@ -4,7 +4,6 @@ import { NotificationType, NotificationChannel, NotificationPriority } from '../
 
 @Entity('notifications')
 @Index(['user_id'])
-@Index(['is_read'])
 @Index(['created_at'])
 export class Notification {
   @PrimaryGeneratedColumn('uuid')

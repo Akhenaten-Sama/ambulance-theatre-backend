@@ -1,7 +1,7 @@
 import { IsString, IsNotEmpty, IsNumber, IsEnum, IsOptional, IsUUID, ValidateNested, Min, Max, IsObject } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { EmergencyType, EmergencySeverity } from '../../common/enums';
+import { EmergencyType, EmergencySeverity, RequestStatus } from '../../common/enums';
 import { Address, VitalSigns } from '../../common/types';
 
 export class CreateEmergencyRequestDto {
@@ -139,5 +139,3 @@ export class QueryEmergencyRequestDto {
   @IsOptional()
   limit?: number;
 }
-
-import { RequestStatus } from '../../common/enums';

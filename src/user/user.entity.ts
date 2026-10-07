@@ -3,10 +3,6 @@ import { UserRole, UserStatus, BloodGroup, Gender } from '../common/enums';
 import { EmergencyContact, InsuranceInfo, Certification, NotificationPreferences } from '../common/types';
 
 @Entity('users')
-@Index(['email'])
-@Index(['phone_number'])
-@Index(['role'])
-@Index(['status'])
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;

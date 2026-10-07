@@ -8,8 +8,6 @@ import { Equipment, Supply } from '../common/types';
 @Entity('theatre_bookings')
 @Index(['theatre_id'])
 @Index(['patient_id'])
-@Index(['status'])
-@Index(['scheduled_start'])
 export class TheatreBooking {
   @PrimaryGeneratedColumn('uuid')
   id: string;
